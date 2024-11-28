@@ -20,15 +20,17 @@ git clone https://github.com/Tibetano/shopper_test.git
 cd shopper_test-main
 
 ## Executar o projeto via terminal
- - Para executar o projeto sem utilizar o Docker, será necessário ter o banco de dados Postgres instalado e ouvindo na porta padrão (5432).
+ - Para executar o projeto sem utilizar o Docker, será necessário ter o
+   banco de dados Postgres instalado e ouvindo na porta padrão (5432).
 
 # Baixar as dependencias do projeto
 npm intall
 
 # Executar o projeto
 npm run dev
-
-> **NOTA:** Ao executar o script acima pela primeira vez, o banco fará duas solicitações, primeiro a confirmação de reset do banco e segundo o nome da migration, responda "yes" e "nome_qualquer_para_migration".
+ - NOTA: Ao executar o script acima pela primeira vez, o banco fará duas solicitações,
+         primeiro a confirmação de reset do banco e segundo o nome da migration,
+         responda "yes" e "nome_qualquer_para_migration".
 
 ## Executar o projeto via Docker
 # Subir aplicação via Docker
