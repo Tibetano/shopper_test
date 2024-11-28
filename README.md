@@ -4,7 +4,7 @@ Olá, seja bem-vindo(a)!
 
 Este projeto consiste no backend de uma aplicação fullstack, solicitada em um teste para uma vaga fullstack na Shopper..
 
-> **IMPORTANTE:** Caso você seja um(a) avaliador(a), o arquivo .env contido na raiz do projeto contém a URL de acesso ao banco de dados (este arquivo é criado automaticamente pelo Prisma ORM). Logo, a google_key deverá ser acrescentada ao .env já existente, pois, em caso de sobrescrita do mesmo, o servidor perderá o acesso ao banco de dados. 
+> **IMPORTANTE:** Um arquivo .env deve ser criado na raiz do projeto com as variáveis GOOGLE_API_KEY="SUA-KEY" e DATABASE_URL="postgresql://postgres:postgres@postgres:5432/shopper_test?schema=public" (url de conexão com banco de dados). 
 
 Obrigrado!
 
@@ -27,6 +27,8 @@ npm intall
 
 # Executar o projeto
 npm run dev
+
+> **NOTA:** Ao executar o script acima pela primeira vez, o banco fará duas solicitações, primeiro a confirmação de reset do banco e segundo o nome da migration, responda "yes" e "nome_qualquer_para_migration".
 
 ## Executar o projeto via Docker
 # Subir aplicação via Docker
