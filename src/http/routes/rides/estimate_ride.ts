@@ -27,7 +27,7 @@ export const estimateRide = (app:FastifyInstance) => {
             headers:{
             "Content-Type":"application/json",
             "X-Goog-Api-Key":process.env.GOOGLE_API_KEY,
-            "X-Goog-FieldMask":"routes.duration,routes.distanceMeters,routes.legs.startLocation,routes.legs.endLocation"
+            "X-Goog-FieldMask":"*"
             }
         }
         const data = {
@@ -48,13 +48,11 @@ export const estimateRide = (app:FastifyInstance) => {
             languageCode: "pt-BR",
             units: "IMPERIAL"
         }
-        
-        const GooMapsResponse = await axios.post("https://routes.googleapis.com/directions/v2:computeRoutes",data,config)
-        
+        const GoogleMapsResponse = await axios.post("https://routes.googleapis.com/directions/v2:computeRoutes",data,config)
         const drivers = await prisma.driver.findMany({
             where:{
                 minKm: {
-                    lte:(GooMapsResponse.data.routes[0].distanceMeters/1000)
+                    lte:(GoogleMapsResponse.data.routes[0].distanceMeters/1000)
                 } 
             },
             include: {
@@ -71,24 +69,30 @@ export const estimateRide = (app:FastifyInstance) => {
                 }
             },
         })
-
-        const driversWithValue = drivers.map(driver=>({...drivers,value:(GooMapsResponse.data.routes[0].distanceMeters/1000)*driver.rate}))
-
+        const driversWithValue = drivers.map(driver=>({
+            id: driver.id,
+            name: driver.name,
+            description: driver.description,
+            vehicle: driver.vehicle,
+            minKm: driver.minKm,
+            rate: driver.rate,
+            review: driver.review,
+            value:(GoogleMapsResponse.data.routes[0].distanceMeters/1000)*driver.rate
+        }))
         const response = {
             origin: {
-                latitude: GooMapsResponse.data.routes[0].legs[0].startLocation.latLng.latitude,
-                longitude: GooMapsResponse.data.routes[0].legs[0].startLocation.latLng.longitude
+                latitude: GoogleMapsResponse.data.routes[0].legs[0].startLocation.latLng.latitude,
+                longitude: GoogleMapsResponse.data.routes[0].legs[0].startLocation.latLng.longitude
             },
             destination: {
-                latitude: GooMapsResponse.data.routes[0].legs[0].endLocation.latLng.latitude,
-                longitude: GooMapsResponse.data.routes[0].legs[0].endLocation.latLng.longitude
+                latitude: GoogleMapsResponse.data.routes[0].legs[0].endLocation.latLng.latitude,
+                longitude: GoogleMapsResponse.data.routes[0].legs[0].endLocation.latLng.longitude
             },
-            distance: GooMapsResponse.data.routes[0].distanceMeters,
-            duration: GooMapsResponse.data.routes[0].duration,
+            distance: GoogleMapsResponse.data.routes[0].distanceMeters,
+            duration: GoogleMapsResponse.data.routes[0].duration,
             options:driversWithValue,
-            routeResponse:GooMapsResponse.data
+            routeResponse:GoogleMapsResponse.data
         }
-
         return reply.status(200).send(response)
     })
 }
