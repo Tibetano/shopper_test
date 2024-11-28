@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Driver {
+  id        Int      @id @db.Integer
+  name      String
+  description String  @db.Text
+  vehicle   String
+  minKm     Float
+  rate      Float
+
+  review    Review?
+  rides     Ride[]
+}
+
+model Review {
+  id        Int      @id @default(autoincrement()) @db.Integer
+  rating    Float
+  comment   String
+
+  driver    Driver   @relation(fields: [driverId], references: [id])
+  driverId  Int      @unique
+}
+
+model Ride {
+  id          Int      @id @default(autoincrement()) @db.Integer
+  date        DateTime
+  origin      String  @db.Text
+  destination String  @db.Text
+  distance    Float
+  duration    String
+  value       Float
+
+  customer_id String  @db.Uuid
+  driver_id   Int      @db.Integer
+
+  driver      Driver   @relation(fields: [driver_id], references: [id])
+}
