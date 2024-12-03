@@ -2,11 +2,14 @@ FROM node:20
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY ./backend/package*.json ./
 RUN npm install
 
-COPY . .
+COPY ./backend/ .
+COPY .env .
 
 EXPOSE 8080
 
 CMD ["npm", "run", "dev"]
+
+ 

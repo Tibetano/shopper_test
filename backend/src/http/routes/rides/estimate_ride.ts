@@ -3,7 +3,6 @@ import axios from "axios";
 import { prisma } from "../../lib/prisma";
 import { RideEstimateData } from "./types";
 
-
 const myPreHandler = (request: FastifyRequest<{Body: RideEstimateData}>, reply: FastifyReply, done: () => void) => {
     if(request.body.customer_id == "" || request.body.origin == "" || request.body.destination == "") {
         return reply.status(400).send({

@@ -7,8 +7,7 @@ const __dirname = path.dirname(__filename);
 
 (function Config() {
   try {
-    // Caminhos dos arquivos .env
-    const rootEnvPath = path.resolve(__dirname, '../../../../.env');
+    const rootEnvPath = path.resolve(__dirname, '.env');
     const backendEnvPath = path.resolve(__dirname, '../../../.env');
 
     if (!fs.existsSync(rootEnvPath)) {
@@ -21,36 +20,30 @@ const __dirname = path.dirname(__filename);
       throw new Error(`Arquivo .env não encontrado na pasta backend: ${backendEnvPath}`);
     }
 
-    // Leia o conteúdo dos arquivos .env
     const rootEnvContent = fs.readFileSync(rootEnvPath, 'utf-8');
     const backendEnvContent = fs.readFileSync(backendEnvPath, 'utf-8');
 
-    // Função para transformar o conteúdo do arquivo .env em um objeto { chave: valor }
     const parseEnv = (content: string) =>
       content
         .split('\n')
-        .filter((line) => line.trim() && !line.startsWith('#')) // Ignorar linhas vazias e comentários
+        .filter((line) => line.trim() && !line.startsWith('#'))
         .reduce((acc, line) => {
           const [key, ...value] = line.split('=');
-          acc[key.trim()] = value.join('=').trim(); // Suporta valores com '='
+          acc[key.trim()] = value.join('=').trim(); 
           return acc;
         }, {} as Record<string, string>);
 
     const rootEnv = parseEnv(rootEnvContent);
     const backendEnv = parseEnv(backendEnvContent);
 
-    // Variáveis que precisam ser atualizadas ou adicionadas
     const updates: string[] = [];
-    const updatesLog: string[] = []; // Para log no console
+    const updatesLog: string[] = []; 
 
-    // Verificar cada variável do rootEnv
     for (const [key, value] of Object.entries(rootEnv)) {
       if (!(key in backendEnv)) {
-        // Variável está ausente no backend .env
         updates.push(`${key}=${value}`);
         updatesLog.push(`Adicionada: ${key}`);
       } else if (backendEnv[key] !== value) {
-        // Variável existe, mas o valor está desatualizado
         updates.push(`${key}=${value}`);
         updatesLog.push(`Atualizada: ${key} (de "${backendEnv[key]}" para "${value}")`);
       }
@@ -64,7 +57,6 @@ const __dirname = path.dirname(__filename);
     console.log("Alterações realizadas:");
     updatesLog.forEach((log) => console.log(`- ${log}`));
 
-    // Atualizar o backend .env com as alterações
     const mergedEnvContent = backendEnvContent
       .split('\n')
       .filter((line) => line.trim() && !updates.some((update) => line.startsWith(update.split('=')[0] + '=')))
