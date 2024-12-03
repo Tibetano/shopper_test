@@ -2,7 +2,6 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify"
 import { prisma } from "../../lib/prisma";
 import { Ride } from "./types";
 
-  
 const myPreHandler = (request: FastifyRequest<{ Params: { customer_id: string } }>, reply: FastifyReply, done: () => void) => {
     const {customer_id} = request.params;
     if(!customer_id){
