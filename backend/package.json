@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx src/http/initEnv.ts && npx prisma migrate dev && npx prisma db seed && tsx watch src/http/server.ts",
-    "start": "tsx src/http/initEnv.ts && npx prisma migrate dev && npx prisma db seed && tsx watch src/http/server.ts",
-    "teste": "tsx src/http/teste.ts && npx prisma migrate dev && npx prisma db seed && tsx watch src/http/server.ts"
+    "start": "tsx src/http/initEnv.ts && npx prisma migrate dev && npx prisma db seed && tsx watch src/http/server.ts"
   },
   "keywords": [],
   "author": "",
