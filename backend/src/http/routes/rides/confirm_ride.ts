@@ -2,7 +2,6 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify"
 import { prisma } from "../../lib/prisma"
 import { ConfirmRideData, Driver } from "./types"; 
 
-
 const myPreHandler = (request: FastifyRequest<{Body: ConfirmRideData}>, reply: FastifyReply, done: () => void) => {
     const { customer_id, origin, destination } = request.body;
     if(!customer_id || !origin || !destination) {
