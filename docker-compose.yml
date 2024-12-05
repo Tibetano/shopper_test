@@ -32,5 +32,22 @@ services:
       postgres:
         condition: service_healthy
 
+  frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    volumes:
+      - frontend_files:/var/www/html
+
+  nginx_server:
+    build: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - frontend_files:/var/www/html
+    depends_on:
+      - frontend
+
 volumes:
   postgres_data:
+  frontend_files:
