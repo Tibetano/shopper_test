@@ -23,3 +23,5 @@ docker compose up --build -d
 # Derrubar a aplicação do Docker
 docker compose down
 ```
+
+URL principal: "http://localhost:80".
